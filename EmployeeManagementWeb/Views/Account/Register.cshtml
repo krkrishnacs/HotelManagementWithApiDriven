@@ -1,0 +1,60 @@
+﻿@model EmployeeManagementWeb.Models.Register
+
+@{
+    ViewData["Title"] = "Register";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Register</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Register" method="post">
+                        <div class="form-group">
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" type="text" class="form-control" placeholder="Enter User Name !"/>
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" placeholder="Enter Your EmailAddress" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Enter Your Password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                        <div>
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success">
+                                    @TempData["SuccessMessage"]
+                                </div>
+                            }
+                            else if (TempData["errorMessage"] != null)
+                            {
+                                <div class="alert alert-danger">
+                                    @TempData["errorMessage"]
+                                </div>
+                            }
+                        </div>
+                        <div>
+                            <a asp-action="Login">Back to Login</a>
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
