@@ -7,9 +7,9 @@
 <h1>GetAll_EmployeeDeatil</h1>
 
 <p>
-    <a asp-action="GetAll_EmployeeDeatil">Create New</a>
+    <a asp-action="EmployeeDeatil" class="btn btn-primary">Create New Employee</a>
 </p>
-<table class="table">
+<table class="table table-bordered  table-hover table-responsive">
     <thead>
         <tr>
             <th>
@@ -33,7 +33,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Designation)
             </th>
-            <th></th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -60,9 +62,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Designation)
             </td>
+
             <td>
-                @Html.ActionLink("Edit", "EditEmployeeDeatil", new { id=item.Id }) |
-                    @Html.ActionLink("Delete", "DeleteEmployeeDeatil", new { id = item.Id })
+                    @Html.ActionLink("Edit", "EditEmployeeDeatil", new { id = item.Id },new { @class = "btn btn-primary"}) |
+                    @Html.ActionLink("Delete", "DeleteEmployeeDeatil", new { id = item.Id }, new { @class = "btn btn-danger"})
             </td>
         </tr>
 }

@@ -30,7 +30,7 @@ namespace EmployeeManagementWeb.Controllers
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     TempData["SuccessMessage"] = "Employee Details Add Sucessfuly!";
-                    return RedirectToAction("Login","Account");
+                    return RedirectToAction("GetAll_EmployeeDeatil", "Employee");
                 }
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@ namespace EmployeeManagementWeb.Controllers
         public IActionResult EditEmployeeDeatil(int id)
         {
             Employee employee = new Employee();
-            HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "Employee/editEmployeeDeatils" + id).Result;
+            HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/Employee/GetEmployeeById" + id).Result;
             if (response.IsSuccessStatusCode)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
@@ -70,7 +70,7 @@ namespace EmployeeManagementWeb.Controllers
             try
             {
                 Employee employee = new Employee();
-                HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "Employee/deleteEmployee" + Id).Result;
+                HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "Employee/getEmpById" + Id).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string data = response.Content.ReadAsStringAsync().Result;
@@ -83,12 +83,12 @@ namespace EmployeeManagementWeb.Controllers
                 throw;
             }
         }
-        [HttpPost]
+        [HttpPost,ActionName("Delete")]
         public IActionResult DeleteConfirmEmployeeDeatil(int Id)
         {
             try
             {
-                HttpResponseMessage response = _client.DeleteAsync(_client.BaseAddress + "Employee/deleteEmployee" + Id).Result;
+                HttpResponseMessage response = _client.DeleteAsync(_client.BaseAddress + "Employee/DeleteEmployee" + Id).Result;
                 if (response.IsSuccessStatusCode)
                 {
                 return RedirectToAction("EmployeeDeatil");

@@ -3,6 +3,7 @@ using EmployeeMangementAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 namespace EmployeeMangementAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -36,6 +37,7 @@ namespace EmployeeMangementAPI.Controllers
             }
         }
         [HttpGet("{id}")]
+        //[Route("getEmpById")]
         public ActionResult<Employee> GetEmployeeById(int id)
         {
             var employee = _context.Employees.Find(id);
@@ -54,16 +56,16 @@ namespace EmployeeMangementAPI.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetEmployeeById), new { id = employee.Id }, employee);
         }
-        [HttpPut("{id}editEmployeeDeatils")]
-        public IActionResult UpdateEmployee(int id, Employee employee)
+        [HttpGet]
+        public IActionResult UpdateEmployee(int id)
         {
             try
             {
-                if (id != employee.Id)
+                if (id !=0)
                 {
-                    return BadRequest($"Employee Id{employee.Id} is  Invalid");
+                    return BadRequest($"Employee Id{id} is  Invalid");
                 }
-                _context.Entry(employee).State = EntityState.Modified;
+                _context.Entry(id).State = EntityState.Modified;
                 _context.SaveChanges();
 
                 return Ok("Employee Update Sucessfully!");
@@ -73,7 +75,44 @@ namespace EmployeeMangementAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("{id},deleteEmployee")]
+        [HttpPost,Route("UpdateEmployee")]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateEmployeeRecod(int Id, Employee employee)
+        {
+            try
+            {
+                if (employee.Id == 0||employee == null)
+                {
+                    if (employee==null)
+                    {
+                        return BadRequest("Data is Invalid!");
+
+                    }
+                    else if (employee.Id==0)
+                    {
+                        return BadRequest($"Data Id{employee.Id} is Invalid!");
+                    }
+                }
+                var emp = _context.Employees.Find(employee.Id);
+                if (emp != null) 
+                {
+                    return NotFound($"Employee Not Found With {employee.Id}");
+                }
+                emp.FirstName = employee.FirstName;
+                emp.LastName = employee.LastName;
+                emp.Email = employee.Email;
+                emp.Address= employee.Address;
+                emp.MobileNumber = employee.MobileNumber;
+                emp.Designation= employee.Designation;
+                _context.SaveChanges();
+                return Ok("Employee Update Sucessfully!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete,Route("EmpDeleted")]
         public IActionResult DeleteEmployee(int id)
         {
             try
@@ -82,12 +121,11 @@ namespace EmployeeMangementAPI.Controllers
 
                 if (employee == null)
                 {
-                    return NotFound("Employee Deatils Not Found with Id,{id}");
+                    return NotFound($"Employee Deatils Not Found with Id,{id}");
                 }
 
                 _context.Employees.Remove(employee);
                 _context.SaveChanges();
-
                 return Ok("Employee Deleted Sucessfully!");
             }
             catch (Exception ex)
