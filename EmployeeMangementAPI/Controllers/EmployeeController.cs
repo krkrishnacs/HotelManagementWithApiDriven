@@ -36,8 +36,7 @@ namespace EmployeeMangementAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("{id}")]
-        //[Route("getEmpById")]
+        [HttpGet("getEmpById")]
         public ActionResult<Employee> GetEmployeeById(int id)
         {
             var employee = _context.Employees.Find(id);
@@ -56,7 +55,7 @@ namespace EmployeeMangementAPI.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetEmployeeById), new { id = employee.Id }, employee);
         }
-        [HttpGet]
+        [HttpGet("{id}")]
         public IActionResult UpdateEmployee(int id)
         {
             try
@@ -75,18 +74,16 @@ namespace EmployeeMangementAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost,Route("UpdateEmployee")]
-        [ValidateAntiForgeryToken]
-        public IActionResult UpdateEmployeeRecod(int Id, Employee employee)
+        [HttpPut("UpdateEmp")]
+        public IActionResult UpdateEmployeeRecod(Employee employee)
         {
             try
             {
-                if (employee.Id == 0||employee == null)
+                if (employee ==null ||employee.Id == 0)
                 {
                     if (employee==null)
                     {
                         return BadRequest("Data is Invalid!");
-
                     }
                     else if (employee.Id==0)
                     {
@@ -94,7 +91,7 @@ namespace EmployeeMangementAPI.Controllers
                     }
                 }
                 var emp = _context.Employees.Find(employee.Id);
-                if (emp != null) 
+                if (emp == null) 
                 {
                     return NotFound($"Employee Not Found With {employee.Id}");
                 }
@@ -112,7 +109,7 @@ namespace EmployeeMangementAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete,Route("EmpDeleted")]
+        [HttpDelete("EmpDeleted")]
         public IActionResult DeleteEmployee(int id)
         {
             try

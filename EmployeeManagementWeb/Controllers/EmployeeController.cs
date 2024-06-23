@@ -55,50 +55,66 @@ namespace EmployeeManagementWeb.Controllers
         [HttpGet]
         public IActionResult EditEmployeeDeatil(int id)
         {
-            Employee employee = new Employee();
-            HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/Employee/GetEmployeeById" + id).Result;
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string data = response.Content.ReadAsStringAsync().Result;
-                employee = JsonConvert.DeserializeObject<Employee>(data);
-            }
+                Employee employee = new Employee();
+                HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "Employee/getEmpById?id=" + id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = response.Content.ReadAsStringAsync().Result;
+                    employee = JsonConvert.DeserializeObject<Employee>(data);
+                }
             return View(employee);
-        } 
+            }
+            catch (Exception ex)
+            {
+                TempData["errorMessage"] = ex.Message;
+                return View();
+            }
+        }
+        [HttpPost]
+        public IActionResult EditEmployeeDeatil(Employee employee)
+        {
+            try
+            {
+                //if (employee.Id!=0)
+                //{
+                //    return BadRequest();
+                //}
+                string data = JsonConvert.SerializeObject(employee);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = _client.PutAsync(_client.BaseAddress + "Employee/UpdateEmp", content).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("EmployeeDeatil");
+                }
+                return View(employee);
+            }
+            catch (Exception ex)
+            {
+                TempData["errorMessage"] = ex.Message;
+                return View();
+            }
+        }
         [HttpGet]
         public IActionResult DeleteEmployeeDeatil(int Id)
         {
             try
             {
                 Employee employee = new Employee();
-                HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "Employee/getEmpById" + Id).Result;
+                HttpResponseMessage response = _client.DeleteAsync(_client.BaseAddress + "Employee/EmpDeleted?Id=" + Id).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string data = response.Content.ReadAsStringAsync().Result;
-                    employee = JsonConvert.DeserializeObject<Employee>(data);
                 }
-                return View(employee);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        [HttpPost,ActionName("Delete")]
-        public IActionResult DeleteConfirmEmployeeDeatil(int Id)
-        {
-            try
-            {
-                HttpResponseMessage response = _client.DeleteAsync(_client.BaseAddress + "Employee/DeleteEmployee" + Id).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                return RedirectToAction("EmployeeDeatil");
-                }
+                return RedirectToAction(nameof(EmployeeDeatil));
             }
             catch (Exception ex)
             {
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
+                return View();
             }
-            return View();
         }
     }
 }
