@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Login";
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="~/js/popclose.js"></script>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -26,11 +29,16 @@
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
+                        
+                        @{
+                            var SuccessMessage = TempData["SuccessMessage"]?.ToString();
+                        }
                         <div>
                             @if (TempData["SuccessMessage"] != null)
                             {
                                 <div class="alert alert-success">
-                                    @TempData["SuccessMessage"]
+                                   @SuccessMessage
+                                    <button type="button" class="btn close float-end alert" data-bs-dismiss="alert" aria-label="close"></button>
                                 </div>
                             }
                             else if (TempData["errorMessage"] != null)

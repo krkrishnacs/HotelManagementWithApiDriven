@@ -148,6 +148,40 @@ namespace EmployeeMangementAPI.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("EmployeeMangementAPI.Models.Guest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AddressOfGuest")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CheckInDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CheckOutDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Remember")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Guests");
+                });
+
             modelBuilder.Entity("EmployeeMangementAPI.Models.Product", b =>
                 {
                     b.Property<int>("Id")
