@@ -17,6 +17,9 @@ namespace EmployeeMangementAPI.DataDbContext
         public DbSet<Product> products { set; get; }
         public DbSet<Employee> Employees { set; get; }
         public DbSet<Guest> Guests { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<GuestMember> GuestMember { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
