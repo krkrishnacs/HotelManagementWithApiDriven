@@ -20,6 +20,7 @@ namespace EmployeeMangementAPI.DataDbContext
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<GuestMember> GuestMember { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

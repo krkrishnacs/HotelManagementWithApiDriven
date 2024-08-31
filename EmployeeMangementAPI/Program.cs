@@ -1,5 +1,6 @@
 using EmployeeMangementAPI.DataDbContext;
 using EmployeeMangementAPI.Models;
+using EmployeeMangementAPI.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,10 @@ var builder  = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+//builder.Services.AddScoped<RoleRepository>();
+//builder.Services.AddScoped<RoleRepository>(provider => new RoleRepository(
+//    builder.Configuration.GetConnectionString("EmpManagement")));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
